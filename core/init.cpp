@@ -269,7 +269,7 @@ void Init::checkDependencies() {
     for (std::string output : OutputConf.sshFound) {
         std::cout << "\t" << YELLOW << output << RESET << "\n";
     }
-    std::cout << GREEN << "[+] Found: " << CYAN << OutputConf.backupFound.size() << RESET << " " << "SSH files" << "\n";
+    std::cout << GREEN << "[+] Found: " << CYAN << OutputConf.backupFound.size() << RESET << " " << "Backup files" << "\n";
     for (std::string output : OutputConf.backupFound) {
         std::cout << "\t" << YELLOW << output << RESET << "\n";
     }
