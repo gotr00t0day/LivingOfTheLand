@@ -177,8 +177,9 @@ struct Config{
     std::vector<std::string> sshFound;
     std::vector<std::string> checkMount;
     std::vector<std::string> mountFound;
+    std::vector<std::string> backUP;
+    std::vector<std::string> backupFound;
 };
-
 
 void Init::checkDependencies() {
 
@@ -190,7 +191,8 @@ void Init::checkDependencies() {
     ParseConf.credPaths = parseDependencies("config/lotl.conf", "checkCreds");
     ParseConf.bashHistory = parsePaths("config/lotl.conf", "checkBashHistory");
     ParseConf.logs = parsePaths("config/lotl.conf", "checkLogs");
-
+    ParseConf.checkSSH = parsePaths("config/lotl.conf", "checkSSH");
+    ParseConf.backUP = parsePaths("config/lotl.conf", "CheckBackUp");
 
 
     for (const auto& path : ParseConf.credPaths) {
@@ -235,6 +237,12 @@ void Init::checkDependencies() {
         }
     }
 
+    for (const auto& cmd : ParseConf.backUP) {
+        if ( commandExists(cmd)) {
+            OutputConf.backupFound.push_back(cmd);
+        }
+    }
+
     std::cout << "[*] Checking dependencies..." << "\n\n";
 
     std::cout << GREEN << "[+] Found: " << CYAN << OutputConf.requiredCommands.size() << RESET << " " << "(required) dependencies" << "\n";
@@ -259,6 +267,10 @@ void Init::checkDependencies() {
     }
     std::cout << GREEN << "[+] Found: " << CYAN << OutputConf.sshFound.size() << RESET << " " << "SSH files" << "\n";
     for (std::string output : OutputConf.sshFound) {
+        std::cout << "\t" << YELLOW << output << RESET << "\n";
+    }
+    std::cout << GREEN << "[+] Found: " << CYAN << OutputConf.backupFound.size() << RESET << " " << "SSH files" << "\n";
+    for (std::string output : OutputConf.backupFound) {
         std::cout << "\t" << YELLOW << output << RESET << "\n";
     }
 
