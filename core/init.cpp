@@ -36,10 +36,8 @@ void Init::welcome() {
     Living Of The Land Toolkit
 
 
-
-    
 Author:  c0d3Ninja
-Version: v0.3
+Version: v0.4
 
 ========================================================
     )" << RESET << std::endl;
