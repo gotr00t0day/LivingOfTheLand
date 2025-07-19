@@ -37,7 +37,7 @@ void Init::welcome() {
 
 
 Author:  c0d3Ninja
-Version: v0.6
+Version: v0.7
 
 ========================================================
     )" << RESET << std::endl;
@@ -329,7 +329,7 @@ void Init::checkDependencies() {
         if (checkPaths(expanded) == 1) {
             std::string cmd = "cat \"" + expanded + "\"";
             std::string output = execCommand(cmd);
-            std::cout << GREEN << "[+] Contents of " << MAGENTA << path << ":\n" <<RESET << output << RESET << "\n";
+            std::cout << GREEN << "[+] Contents of " << MAGENTA << path << ":\n" <<RESET << YELLOW << output << RESET << "\n";
         }
     }  
     std::cout << "\n";
@@ -344,7 +344,7 @@ void Init::checkDependencies() {
             }
             std::string cmd = "cat \"" + expanded + "\"";
             std::string output = execCommand(cmd);
-            std::cout << GREEN << "[+] Contents of " << MAGENTA << path << ":\n" << RESET << output << RESET << "\n";
+            std::cout << GREEN << "[+] Contents of " << MAGENTA << path << ":\n" << RESET << YELLOW << output << RESET << "\n";
         }
     }
 }  

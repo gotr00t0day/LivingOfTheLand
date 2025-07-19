@@ -19,7 +19,7 @@ int main() {
     Init::welcome();
     Init::checkDependencies();
 
-    std::vector<std::string> suidFiles = findSUIDs("/");
+    auto suidFiles = findSUIDs();  // uses default "/"
 
     std::cout << RED << "\n================= SUID Files =================\n" << RESET;
     for (const auto& file : suidFiles) {

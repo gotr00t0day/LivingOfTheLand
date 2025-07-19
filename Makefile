@@ -23,14 +23,15 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
+# Rebuild if headers change
+$(CORE_DIR)/init.o: $(CORE_DIR)/init.h
+$(TOOLS_DIR)/suids.o: $(TOOLS_DIR)/suids.h
+
 # Clean build artifacts
 clean:
 	rm -f $(OBJS) $(TARGET)
 
 # Optional: force rebuild
 rebuild: clean all
-
-# Dependency on headers (optional)
-$(OBJS): $(CORE_DIR)/init.h $(TOOLS_DIR)/suids.h
 
 .PHONY: all clean rebuild

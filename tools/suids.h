@@ -6,5 +6,4 @@
 
 std::vector<std::string> findSUIDs(const std::string path = "/");
 
-
 #endif
