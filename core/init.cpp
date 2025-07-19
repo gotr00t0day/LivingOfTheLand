@@ -37,7 +37,7 @@ void Init::welcome() {
 
 
 Author:  c0d3Ninja
-Version: v0.4
+Version: v0.6
 
 ========================================================
     )" << RESET << std::endl;
