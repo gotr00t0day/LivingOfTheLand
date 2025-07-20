@@ -1,4 +1,7 @@
 #include "init.h"
+#include "../tools/executils.h"
+#include "../tools/web.h"
+#include <string>
 #include <exception>
 #include <iostream>
 #include <cstdlib>
@@ -37,16 +40,11 @@ void Init::welcome() {
 
 
 Author:  c0d3Ninja
-Version: v0.7
+Version: v0.8
 
 ========================================================
     )" << RESET << std::endl;
 }
-
-bool commandExists(const std::string& cmd) {
-    return (system(("which " + cmd + " > /dev/null 2>&1").c_str()) == 0);
-}
-
 // filesystem doesn't interpret ~ so you need to expand it yourself
 std::string expandPath(const std::string& path) {
     if (path[0] == '~') {
@@ -66,22 +64,6 @@ int checkPaths(const std::string& path) {
     }
     return -1;
 }
-
-std::string execCommand(const std::string& cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-
-    FILE* pipe = popen(cmd.c_str(), "r");
-    if (!pipe) return "ERROR";
-
-    while (fgets(buffer.data(), buffer.size(), pipe) != nullptr) {
-        result += buffer.data();
-    }
-    pclose(pipe);
-    return result;
-}
-
-
 
 std::vector<std::string> parseDependencies(const std::string& file, const std::string& key) {
     std::ifstream in(file);
@@ -129,34 +111,7 @@ std::vector<std::string> parsePaths(const std::string& file, const std::string& 
     return paths;
 }
 
-// Download files from the web
-std::vector<unsigned char> Web(const std::string& url, const std::string& filename) {
-    std::vector<unsigned char> results;
 
-    try {
-        if (commandExists("wget") == 1) {
-            std::string cmd = "wget -q -O \"" + filename + "\" \"" + url + "\"";
-            execCommand(cmd);
-        }
-
-        if (!std::filesystem::exists(filename)) {
-            throw std::runtime_error("No file downloaded");
-        }
-
-        std::ifstream file(filename, std::ios::binary);
-        if (!file) {
-            throw std::runtime_error("Failed to open downloaded file");
-        }
-
-        results.assign(std::istreambuf_iterator<char>(file),
-                       std::istreambuf_iterator<char>());
-    }
-    catch (const std::exception& e) {
-        std::cerr << RED << "Error: " << e.what() << RESET << "\n";
-    }
-
-    return results;
-}
 
 
 
@@ -320,6 +275,8 @@ void Init::checkDependencies() {
     std::cout << "Uptime: " << YELLOW << uptimeResults << RESET << "\n\n";
     std::cout << "Mount: \n" << YELLOW << mountResults << RESET << "\n\n";
     std::cout << RED << "\t======================================================\n\n" << RESET;
+
+
 
     std::cout << "\n";
     std::cout << RED << "Displaying the contents of the paths that might contain creds..." << "\n\n";

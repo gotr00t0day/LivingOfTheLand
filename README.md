@@ -1,4 +1,4 @@
-# Living Off The Land (LOTL) v0.7
+# Living Off The Land (LOTL) v0.8
 
 **Author:** c0d3Ninja
 
