@@ -1,6 +1,8 @@
 #include <iostream>
 #include "core/init.h"
+#include "tools/executils.h"
 #include "tools/suids.h"
+#include "tools/web.h"
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
@@ -26,6 +28,22 @@ int main() {
         std::cout << YELLOW << "  " << file << "\n";
     }
     std::cout << RED << "\n===============================================\n" << RESET;
+    std::cout << "\n";
+
+    std::cout << RED << "\n================= Download Binaries ===========\n\n" << RESET;
+    if (commandExists("nmap") == -1){
+        std::cout << RED << "Nmap is not installed, Downloading nmap binary" << RESET << "\n\n";
+        Web("https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/nmap", "nmap");
+    } else {
+        std::cout << "Nmap already installed" << "\n";
+    }
+    if (commandExists("nc") == -1) {
+        std::cout << RED << "Ncat not installed, Downloading netcat binary" << RESET << "\n\n";
+        Web("https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/ncat", "nc");
+    } else {
+        std::cout << "Netcat already installed" << "\n";
+    }
+    std::cout << RED << "=================================================\n\n" << RESET;
 
     return 0;
 }

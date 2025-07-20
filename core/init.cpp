@@ -1,13 +1,11 @@
 #include "init.h"
 #include "../tools/executils.h"
-#include "../tools/web.h"
 #include <string>
 #include <exception>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
-#include <stdexcept>
 #include <vector>
 #include <filesystem>
 
@@ -40,7 +38,7 @@ void Init::welcome() {
 
 
 Author:  c0d3Ninja
-Version: v0.8
+Version: v0.9
 
 ========================================================
     )" << RESET << std::endl;
@@ -275,7 +273,6 @@ void Init::checkDependencies() {
     std::cout << "Uptime: " << YELLOW << uptimeResults << RESET << "\n\n";
     std::cout << "Mount: \n" << YELLOW << mountResults << RESET << "\n\n";
     std::cout << RED << "\t======================================================\n\n" << RESET;
-
 
 
     std::cout << "\n";

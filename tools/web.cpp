@@ -17,6 +17,13 @@ std::vector<unsigned char> Web(const std::string& url, const std::string& filena
         if (commandExists("wget") == 1) {
             std::string cmd = "wget -q -O \"" + filename + "\" \"" + url + "\"";
             execCommand(cmd);
+        } else if (commandExists("wget") == -1) {
+            int checkCurl = commandExists("curl");
+            if (checkCurl == 1) {
+                std::string cmd = "curl -s -L -o \"" + filename + "\" \"" + url + "\"";
+            }
+        } else {
+            std::cout << RED << "wget or curl not installed!" << RESET << "\n";
         }
 
         if (!std::filesystem::exists(filename)) {
