@@ -6,13 +6,15 @@ CXXFLAGS = -std=c++20 -Wall -Wextra -g
 SRC_DIR = .
 CORE_DIR = core
 TOOLS_DIR = tools
+MODULES_DIR = modules
 
 # Source and object files
 SRCS = $(SRC_DIR)/main.cpp \
        $(CORE_DIR)/init.cpp \
        $(TOOLS_DIR)/suids.cpp \
-       $(TOOLS_DIR)/executils.cpp \
-       $(TOOLS_DIR)/web.cpp
+       $(MODULES_DIR)/executils.cpp \
+       $(TOOLS_DIR)/web.cpp \
+       $(MODULES_DIR)/parsers.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -28,8 +30,9 @@ $(TARGET): $(OBJS)
 # Rebuild if headers change
 $(CORE_DIR)/init.o: $(CORE_DIR)/init.h
 $(TOOLS_DIR)/suids.o: $(TOOLS_DIR)/suids.h
-$(TOOLS_DIR)/executils.o: $(TOOLS_DIR)/executils.h
+$(MODULES_DIR)/executils.o: $(MODULES_DIR)/executils.h
 $(TOOLS_DIR)/web.o: $(TOOLS_DIR)/web.h
+$(MODULES_DIR)/parsers.o: $(MODULES_DIR)/parsers.h
 
 # Clean build artifacts
 clean:

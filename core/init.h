@@ -2,7 +2,6 @@
 #define INIT_H
 
 namespace Init {
-    
     void welcome();
     void checkDependencies();
 }
