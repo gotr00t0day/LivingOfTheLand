@@ -62,6 +62,8 @@ struct Config{
     std::vector<std::string> mountFound;
     std::vector<std::string> backUP;
     std::vector<std::string> backupFound;
+    std::vector<std::string> sensitive;
+    std::vector<std::string> sensitiveFound;
 };
 
 void Init::checkDependencies() {
@@ -76,7 +78,7 @@ void Init::checkDependencies() {
     ParseConf.logs = parsePaths("config/lotl.conf", "checkLogs");
     ParseConf.checkSSH = parsePaths("config/lotl.conf", "checkSSH");
     ParseConf.backUP = parsePaths("config/lotl.conf", "CheckBackUp");
-
+    ParseConf.sensitive = parsePaths("config/lotl.conf", "checkSensitive");
 
     for (const auto& path : ParseConf.credPaths) {
         if (checkPaths(path) == 1) {
@@ -126,6 +128,12 @@ void Init::checkDependencies() {
         }
     }
 
+    for (const auto& cmd : ParseConf.sensitive) {
+        if ( commandExists(cmd)) {
+            OutputConf.sensitiveFound.push_back(cmd);
+        }
+    }
+
     std::cout << "[*] Checking dependencies..." << "\n\n";
 
     std::cout << GREEN << "[+] Found: " << CYAN << OutputConf.requiredCommands.size() << RESET << " " << "(required) dependencies" << "\n";
@@ -154,6 +162,10 @@ void Init::checkDependencies() {
     }
     std::cout << GREEN << "[+] Found: " << CYAN << OutputConf.backupFound.size() << RESET << " " << "Backup files" << "\n";
     for (std::string output : OutputConf.backupFound) {
+        std::cout << "\t" << YELLOW << output << RESET << "\n";
+    }
+    std::cout << GREEN << "[+] Found: " << CYAN << OutputConf.sensitiveFound.size() << RESET << " " << "Sensitive files" << "\n";
+    for (std::string output : OutputConf.sensitiveFound) {
         std::cout << "\t" << YELLOW << output << RESET << "\n";
     }
 
@@ -231,4 +243,42 @@ void Init::checkDependencies() {
             std::cout << GREEN << "[+] Contents of " << MAGENTA << path << ":\n" << RESET << YELLOW << output << RESET << "\n";
         }
     }
-}  
+    std::cout << "\n";
+    if (OutputConf.sensitiveFound.size() > 0) {
+        std::cout << RED << "Displaying the contents of the sensitive files..." << "\n\n";
+
+        for (const auto& path : OutputConf.sensitiveFound) {
+            std::string expanded = expandPath(path);
+            if (checkPaths(expanded) == 1) {
+                std::string cmd = "cat \"" + expanded + "\"";
+                std::string output = execCommand(cmd);
+                std::cout << GREEN << "[+] Contents of " << MAGENTA << path << ":\n" << RESET << YELLOW << output << RESET << "\n";
+            }
+        }
+    }
+    if (OutputConf.logsFound.size() > 0) {
+        std::cout << "\n";
+        std::cout << RED << "Displaying the contents of the logs..." << "\n\n";
+        for (const auto& path : OutputConf.logsFound) {
+            std::string expanded = expandPath(path);
+            if (checkPaths(expanded) == 1) {
+                std::string cmd = "cat \"" + expanded + "\"";
+                std::string output = execCommand(cmd);
+                std::cout << GREEN << "[+] Contents of " << MAGENTA << path << ":\n" << RESET << YELLOW << output << RESET << "\n";
+            }
+        }
+    }
+
+    if (OutputConf.sshFound.size() > 0) {
+        std::cout << "\n";
+        std::cout << RED << "Displaying the contents of the ssh files..." << "\n\n";
+        for (const auto& path : OutputConf.sshFound) {
+            std::string expanded = expandPath(path);
+            if (checkPaths(expanded) == 1) {
+                std::string cmd = "cat \"" + expanded + "\"";
+                std::string output = execCommand(cmd);
+                std::cout << GREEN << "[+] Contents of " << MAGENTA << path << ":\n" << RESET << YELLOW << output << RESET << "\n";
+            }
+        }
+    }
+}
