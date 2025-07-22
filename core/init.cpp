@@ -104,33 +104,38 @@ void Init::checkDependencies() {
         }
     }
 
-    for (const auto& cmd: ParseConf.logs) {
-        if (commandExists(cmd)) {
-            OutputConf.logsFound.push_back(cmd);
+    for (const auto& path : ParseConf.logs) {
+        std::string expanded = expandPath(path);
+        if (checkPaths(expanded) == 1) {
+            OutputConf.logsFound.push_back(path);  // ✅ Correct vector
         }
     }
 
-    for (const auto& cmd : ParseConf.checkSSH) {
-        if ( commandExists(cmd)) {
-            OutputConf.sshFound.push_back(cmd);
+    for (const auto& path : ParseConf.checkSSH) {
+        std::string expanded = expandPath(path);
+        if (checkPaths(expanded) == 1) {
+            OutputConf.sshFound.push_back(path);  // ✅ Correct vector
         }
     }
 
-    for (const auto& cmd : ParseConf.checkMount) {
-        if ( commandExists(cmd)) {
-            OutputConf.mountFound.push_back(cmd);
+    for (const auto& path : ParseConf.checkMount) {
+        std::string expanded = expandPath(path);
+        if (checkPaths(expanded) == 1) {
+            OutputConf.mountFound.push_back(path);  // ✅ Correct vector
         }
     }
 
-    for (const auto& cmd : ParseConf.backUP) {
-        if ( commandExists(cmd)) {
-            OutputConf.backupFound.push_back(cmd);
+    for (const auto& path : ParseConf.backUP) {
+        std::string expanded = expandPath(path);
+        if (checkPaths(expanded) == 1) {
+            OutputConf.backupFound.push_back(path);  // ✅ Correct vector
         }
     }
 
-    for (const auto& cmd : ParseConf.sensitive) {
-        if ( commandExists(cmd)) {
-            OutputConf.sensitiveFound.push_back(cmd);
+    for (const auto& path : ParseConf.sensitive) {
+        std::string expanded = expandPath(path);
+        if (checkPaths(expanded) == 1) {
+            OutputConf.sensitiveFound.push_back(path);  // ✅ Correct vector
         }
     }
 
