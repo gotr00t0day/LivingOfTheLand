@@ -212,6 +212,25 @@ void Init::checkDependencies() {
         std::cerr <<  "Error: " << e.what() << "\n";
     }
 
+    // ifconfig
+    std::string ifconfig;
+    std::string inet;
+    if (commandExists("ifconfig")) {
+        ifconfig = execCommand("ifconfig");
+        if (!ifconfig.empty()) {
+            ifconfig.erase(ifconfig.find_last_not_of("\n") + 1);
+            size_t pos = ifconfig.find("inet ");
+            if (pos != std::string::npos) {
+                size_t start = pos + 5; // Skip "inet "
+                size_t end = ifconfig.find(" ", start);
+                if (end != std::string::npos) {
+                    std::string ip = ifconfig.substr(start, end - start);
+                    inet = ip;
+                }
+            }
+        }
+    }
+
     std::cout << "\n";
 
     std::cout << RED << "\t================= System Information =================\n\n" << RESET;
@@ -219,6 +238,7 @@ void Init::checkDependencies() {
     std::cout << "Hostname: " << YELLOW << hostnameResults << RESET << "\n\n";
     std::cout << "Uptime: " << YELLOW << uptimeResults << RESET << "\n\n";
     std::cout << "Mount: \n" << YELLOW << mountResults << RESET << "\n\n";
+    std::cout << "IP: " << YELLOW << inet << RESET << "\n\n";
     std::cout << RED << "\t======================================================\n\n" << RESET;
 
 
