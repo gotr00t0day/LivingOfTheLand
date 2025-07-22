@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <fstream>
+#include <vector>
 
 // filesystem doesn't interpret ~ so you need to expand it yourself
 std::string expandPath(const std::string& path) {
