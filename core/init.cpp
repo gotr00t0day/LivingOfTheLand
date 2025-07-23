@@ -217,6 +217,7 @@ void Init::checkDependencies() {
     std::string ifconfig;
     std::string inet;
     std::vector<int> openPorts;
+    std::vector<std::string> ip_port_list;
     if (commandExists("ifconfig")) {
         ifconfig = execCommand("ifconfig");
         if (!ifconfig.empty()) {
@@ -237,7 +238,22 @@ void Init::checkDependencies() {
                         } else {
                             continue;
                         }
-                    }                
+                    }
+                    // Check ip /24 subnet
+                    std::string subnet = ip.substr(0, ip.find_last_of("."));
+                    for (int i = 1; i <= 255; ++i) {
+                        std::string fullIP = subnet + "." + std::to_string(i);
+                        std::cout << fullIP << "\n";
+                        for (int port = startPort; port <= endPort; ++port) {
+                            if (isPortOpen(fullIP, port)) {
+                                std::string ip_port = fullIP + ":" + std::to_string(port);
+                                std::cout << ip_port << "\n";
+                                ip_port_list.push_back(ip_port);
+                            } else {
+                                continue;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -251,10 +267,17 @@ void Init::checkDependencies() {
     std::cout << "Uptime: " << YELLOW << uptimeResults << RESET << "\n\n";
     std::cout << "Mount: \n" << YELLOW << mountResults << RESET << "\n\n";
     std::cout << "Local IP: " << YELLOW << inet << RESET << "\n\n";
-    std::cout << "Open Ports: \n";
+    std::cout << "Open Ports: ";
     for (int ports : openPorts) {
-        std::cout << YELLOW << ports << RESET << "\n\n";
+        std::cout << YELLOW << ports << "," << RESET;
     }
+    std::cout << "\n\n";
+
+    std::cout << "Subnet Scan: ";
+    for (std::string ip_port : ip_port_list) {
+        std::cout << YELLOW << ip_port << RESET << "\n";
+    }
+    std::cout << "\n";
     std::cout << RED << "\t======================================================\n\n" << RESET;
 
 
