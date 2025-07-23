@@ -14,7 +14,8 @@ SRCS = $(SRC_DIR)/main.cpp \
        $(TOOLS_DIR)/suids.cpp \
        $(MODULES_DIR)/executils.cpp \
        $(TOOLS_DIR)/web.cpp \
-       $(MODULES_DIR)/parsers.cpp
+       $(MODULES_DIR)/parsers.cpp \
+       $(TOOLS_DIR)/portscanner.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -33,6 +34,7 @@ $(TOOLS_DIR)/suids.o: $(TOOLS_DIR)/suids.h
 $(MODULES_DIR)/executils.o: $(MODULES_DIR)/executils.h
 $(TOOLS_DIR)/web.o: $(TOOLS_DIR)/web.h
 $(MODULES_DIR)/parsers.o: $(MODULES_DIR)/parsers.h
+$(TOOLS_DIR)/portscanner.o: $(TOOLS_DIR)/portscanner.h
 
 # Clean build artifacts
 clean:

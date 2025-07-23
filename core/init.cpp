@@ -1,6 +1,7 @@
 #include "init.h"
 #include "../modules/executils.h"
 #include "../modules/parsers.h"
+#include "../tools/portscanner.h"
 #include <string>
 #include <exception>
 #include <iostream>
@@ -215,6 +216,7 @@ void Init::checkDependencies() {
     // ifconfig
     std::string ifconfig;
     std::string inet;
+    std::vector<int> openPorts;
     if (commandExists("ifconfig")) {
         ifconfig = execCommand("ifconfig");
         if (!ifconfig.empty()) {
@@ -226,6 +228,16 @@ void Init::checkDependencies() {
                 if (end != std::string::npos) {
                     std::string ip = ifconfig.substr(start, end - start);
                     inet = ip;
+                    int startPort = 1;
+                    int endPort = 10000;
+                
+                    for (int port = startPort; port <= endPort; ++port) {
+                        if (isPortOpen(ip, port)) {
+                            openPorts.push_back(port);
+                        } else {
+                            continue;
+                        }
+                    }                
                 }
             }
         }
@@ -238,7 +250,11 @@ void Init::checkDependencies() {
     std::cout << "Hostname: " << YELLOW << hostnameResults << RESET << "\n\n";
     std::cout << "Uptime: " << YELLOW << uptimeResults << RESET << "\n\n";
     std::cout << "Mount: \n" << YELLOW << mountResults << RESET << "\n\n";
-    std::cout << "IP: " << YELLOW << inet << RESET << "\n\n";
+    std::cout << "Local IP: " << YELLOW << inet << RESET << "\n\n";
+    std::cout << "Open Ports: \n";
+    for (int ports : openPorts) {
+        std::cout << YELLOW << ports << RESET << "\n\n";
+    }
     std::cout << RED << "\t======================================================\n\n" << RESET;
 
 
