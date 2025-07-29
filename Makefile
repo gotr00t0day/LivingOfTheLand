@@ -17,7 +17,8 @@ SRCS = $(SRC_DIR)/main.cpp \
        $(MODULES_DIR)/parsers.cpp \
        $(MODULES_DIR)/base64.cpp \
        $(TOOLS_DIR)/portscanner.cpp \
-       $(TOOLS_DIR)/clearlogs.cpp
+       $(TOOLS_DIR)/clearlogs.cpp \
+       $(MODULES_DIR)/scandir.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -39,6 +40,7 @@ $(MODULES_DIR)/parsers.o: $(MODULES_DIR)/parsers.h
 $(MODULES_DIR)/base64.o: $(MODULES_DIR)/base64.h
 $(TOOLS_DIR)/portscanner.o: $(TOOLS_DIR)/portscanner.h
 $(TOOLS_DIR)/clearlogs.o: $(TOOLS_DIR)/clearlogs.h
+$(MODULES_DIR)/scandir.o: $(MODULES_DIR)/scandir.h
 
 # Clean build artifacts
 clean:

@@ -37,10 +37,11 @@ void Init::welcome() {
     ░  ░    ░ ░               ░  ░
 
     Living Of The Land Toolkit
-
+            AKA
+          Malware??
 
 Author:  c0d3Ninja
-Version: v0.15
+Version: v0.16
 
 ========================================================
     )" << RESET << std::endl;
