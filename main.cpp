@@ -5,7 +5,6 @@
 #include "tools/web.h"
 #include "tools/clearlogs.h"
 #include "modules/scandir.h"
-#include <algorithm>
 
 
 #define RESET   "\033[0m"
