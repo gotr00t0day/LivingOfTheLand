@@ -1,5 +1,6 @@
 #include "../modules/executils.h"
 #include "../modules/parsers.h"
+#include <algorithm>
 
 
 // Clearing your tracks
