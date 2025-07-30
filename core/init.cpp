@@ -96,7 +96,7 @@ void Init::checkDependencies() {
     ParseConf.required = parseDependencies("config/lotl.conf", "required");
     ParseConf.optional = parseDependencies("config/lotl.conf", "optional");
     ParseConf.backdoor = parseDependencies("config/lotl.conf", "backdoor");
-    ParseConf.backdoor = parseDependencies("config/lotl.conf", "ip");
+    ParseConf.ip = parseDependencies("config/lotl.conf", "ip");
     ParseConf.pam = parseDependencies("config/lotl.conf", "pam");
     ParseConf.cron = parseDependencies("config/lotl.conf", "cron");
     ParseConf.ssh = parseDependencies("config/lotl.conf", "ssh");
