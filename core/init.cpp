@@ -115,7 +115,7 @@ void Init::checkDependencies() {
     }
 
     // check backdoor option
-    if (std::find(ParseConf.backdoor.begin(), ParseConf.backdoor.end(), "yes") != ParseConf.backdoor.end()) {
+    if (std::find(ParseConf.backdoor.begin(), ParseConf.backdoor.end(), std::string("yes")) != ParseConf.backdoor.end()) {
         for (const auto& pamOption : ParseConf.pam) {
             if (pamOption == "yes") {
                 // pam code
