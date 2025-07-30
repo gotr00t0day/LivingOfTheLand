@@ -11,6 +11,7 @@
 #include <vector>
 #include <filesystem>
 #include <algorithm>
+#include <regex>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
@@ -296,12 +297,15 @@ void Init::checkDependencies() {
         std::cerr <<  "Error: " << e.what() << "\n";
     }
 
-    // ifconfig
     std::string ifconfig;
     std::string inet;
     std::vector<int> openPorts;
     std::vector<std::string> ip_port_list;
-    if (commandExists("ifconfig")) {
+    if (commandExists("ifconfig") == -1) {
+        std::cout << "ifconfig not found\n";
+        std::cout << "Using ip command instead\n";
+        ifconfig = execCommand("ip addr show");
+    } else {
         ifconfig = execCommand("ifconfig");
         if (!ifconfig.empty()) {
             ifconfig.erase(ifconfig.find_last_not_of("\n") + 1);
@@ -325,7 +329,6 @@ void Init::checkDependencies() {
             }
         }
     }
-
     std::cout << "\n";
 
     std::cout << RED << "\t================= System Information =================\n\n" << RESET;
@@ -341,7 +344,7 @@ void Init::checkDependencies() {
         parsePort += std::to_string(ports) + ",";
     }
     parsePort.pop_back();
-    std::cout << YELLOW << parsePort << RESET;
+    std::cout << YELLOW << parsePort << RESET << "\n";
     std::cout << "\n\n";
     
     std::cout << RED << "\t======================================================\n\n\n\n" << RESET;
