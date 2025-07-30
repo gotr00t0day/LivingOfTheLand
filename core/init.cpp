@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <vector>
 #include <filesystem>
+#include <algorithm>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
