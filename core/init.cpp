@@ -1,7 +1,6 @@
 #include "init.h"
 #include "../modules/executils.h"
 #include "../modules/parsers.h"
-#include "../tools/portscanner.h"
 #include "../modules/base64.h"
 #include <sstream>
 #include <string>
@@ -11,7 +10,6 @@
 #include <vector>
 #include <filesystem>
 #include <algorithm>
-#include <regex>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
