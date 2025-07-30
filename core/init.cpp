@@ -60,6 +60,11 @@ std::vector<std::string> sensitiveFiles() {
     return content;
 }
 
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
 
 // Config Struct for all the vectors dealing with the config config/lotl.conf file
 // Output as well
@@ -296,39 +301,6 @@ void Init::checkDependencies() {
     catch (const std::exception& e) {
         std::cerr <<  "Error: " << e.what() << "\n";
     }
-
-    std::string ifconfig;
-    std::string inet;
-    std::vector<int> openPorts;
-    std::vector<std::string> ip_port_list;
-    if (commandExists("ifconfig") == -1) {
-        std::cout << "ifconfig not found\n";
-        std::cout << "Using ip command instead\n";
-        ifconfig = execCommand("ip addr show");
-    } else {
-        ifconfig = execCommand("ifconfig");
-        if (!ifconfig.empty()) {
-            ifconfig.erase(ifconfig.find_last_not_of("\n") + 1);
-            size_t pos = ifconfig.find("inet ");
-            if (pos != std::string::npos) {
-                size_t start = pos + 5; // Skip "inet "
-                size_t end = ifconfig.find(" ", start);
-                if (end != std::string::npos) {
-                    std::string ip = ifconfig.substr(start, end - start);
-                    inet = ip;
-                    int startPort = 1;
-                    int endPort = 10000;
-                    for (int port = startPort; port <= endPort; ++port) {
-                        if (isPortOpen(ip, port)) {
-                            openPorts.push_back(port);
-                        } else {
-                            continue;
-                        }
-                    }
-                }
-            }
-        }
-    }
     std::cout << "\n";
 
     std::cout << RED << "\t================= System Information =================\n\n" << RESET;
@@ -337,15 +309,6 @@ void Init::checkDependencies() {
     std::cout << "Hostname: " << YELLOW << hostnameResults << RESET << "\n\n";
     std::cout << "Uptime: " << YELLOW << uptimeResults << RESET << "\n\n";
     std::cout << "Mount: \n" << YELLOW << mountResults << RESET << "\n\n";
-    std::cout << "Local IP: " << YELLOW << inet << RESET << "\n\n";
-    std::cout << "Open Ports: ";
-    std::string parsePort;
-    for (int ports : openPorts) {
-        parsePort += std::to_string(ports) + ",";
-    }
-    parsePort.pop_back();
-    std::cout << YELLOW << parsePort << RESET << "\n";
-    std::cout << "\n\n";
     
     std::cout << RED << "\t======================================================\n\n\n\n" << RESET;
 
