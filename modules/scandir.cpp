@@ -12,3 +12,39 @@ std::vector<std::string> dirRecursive() {
     }
     return content;
 }
+
+std::vector<std::string> wwwDir() {
+    std::vector<std::string> content;
+    std::vector<std::string> wwwPaths = {"/var/", "/usr/", "/opt/"};
+    std::error_code ec;
+    
+    for (const auto& basePath : wwwPaths) {
+        try {
+            for (auto it = fs::recursive_directory_iterator(basePath, fs::directory_options::skip_permission_denied, ec);
+                 it != fs::recursive_directory_iterator(); it.increment(ec)) {
+                if (ec) {
+                    ec.clear();
+                    continue;
+                }
+                
+                try {
+                    if (it->is_directory()) {
+                        std::string filename = it->path().filename().string();
+                        std::string fullpath = it->path().string();
+                        
+                        if (filename == "www") {
+                            content.push_back(fullpath);
+                        }
+                    }
+                } catch (const fs::filesystem_error& e) {
+                    // Skip individual file/directory errors
+                    continue;
+                }
+            }
+        } catch (const fs::filesystem_error& e) {
+            // Skip if we can't access the base directory
+            continue;
+        }
+    }
+    return content;
+}

