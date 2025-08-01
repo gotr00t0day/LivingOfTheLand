@@ -87,9 +87,9 @@ int main() {
         outFile << phpShell;
         outFile.close();
         if (std::filesystem::exists(shellPath)) {
-            std::cout << GREEN << "shell.php created!" << "\n";
+            std::cout << GREEN << "shell.php created!" << RESET << "\n";
         } else {
-            std::cout << RED << "shell.php wasn't created" << "\n";
+            std::cout << RED << "shell.php wasn't created" << RESET << "\n";
         }
     }
     return 0;
