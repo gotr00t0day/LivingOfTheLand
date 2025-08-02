@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 #include "core/init.h"
 #include "modules/executils.h"
 #include "tools/suids.h"
@@ -82,7 +83,7 @@ int main() {
     }
     ?>)";
     std::vector<std::string> webs = parseDependencies("config/lotl.conf", "www");
-    if (find(webs.begin(), webs.end(), std::string("yes")) != webs.end()) {
+    if (std::find(webs.begin(), webs.end(), std::string("yes")) != webs.end()) {
         auto files = wwwDir();
         for (const auto& dir : files) {
             std::cout << "Found directory: " << dir << "\n";
