@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "core/init.h"
 #include "modules/executils.h"
 #include "tools/suids.h"
