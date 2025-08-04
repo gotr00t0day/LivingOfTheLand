@@ -54,8 +54,8 @@ All enumeration targets and backdoor options are defined in `config/lotl.conf`, 
 ### Build Instructions
 
 ```bash
-# Clone or navigate to the LivingOfTheLand directory
-cd LivingOfTheLand
+# Clone or navigate to the ShadowHarvester directory
+cd ShadowHarvester
 
 # Compile the tool
 make
