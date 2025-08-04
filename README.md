@@ -1,8 +1,8 @@
-# Living Off The Land (LOTL) v0.17
+# ShadowHarvester v0.17
 
 **Author:** c0d3Ninja
 
-A comprehensive privilege escalation enumeration tool designed for Linux/Unix security assessments. LOTL helps security professionals identify potential attack vectors by systematically checking for misconfigurations, exposed credentials, vulnerable system components, and provides advanced persistence mechanisms for authorized testing.
+A comprehensive privilege escalation enumeration tool designed for Linux/Unix security assessments. ShadowHarvester helps security professionals identify potential attack vectors by systematically checking for misconfigurations, exposed credentials, vulnerable system components, and provides advanced persistence mechanisms for authorized testing.
 
 ## Features
 
@@ -72,10 +72,10 @@ make rebuild
 ### Basic Usage
 ```bash
 # Run the tool (standard enumeration)
-./lotl
+./shadowharvester
 
 # Ensure proper permissions for full functionality
-sudo ./lotl
+sudo ./shadowharvester
 ```
 
 ### Output Sections
@@ -92,7 +92,7 @@ The tool provides organized output in the following sections:
 ## Configuration
 
 ### Basic Configuration
-Edit `config/lotl.conf` to customize enumeration targets and enable persistence features:
+Edit `config/shadow.conf` to customize enumeration targets and enable persistence features:
 
 ```ini
 [Dependencies]
@@ -146,7 +146,7 @@ checkSensitive = .env, *.conf, *.config, *.json
 ## Project Structure
 
 ```
-LivingOfTheLand/
+ShadowHarvester/
 ├── main.cpp              # Entry point and argument processing
 ├── core/
 │   ├── init.cpp          # Core enumeration and persistence functionality
@@ -169,10 +169,10 @@ LivingOfTheLand/
 │   ├── web.cpp           # Web reconnaissance tools
 │   └── web.h             # Web tool headers
 ├── config/
-│   └── lotl.conf         # Main configuration file
+│   └── shadow.conf       # Main configuration file
 ├── Makefile              # Build configuration
 ├── README.md             # This documentation
-└── lotl                  # Compiled binary
+└── shadowharvester                  # Compiled binary
 ```
 
 ## Advanced Features
@@ -247,7 +247,7 @@ make clean && make
 ```
 
 ### Adding New Features
-1. Update `config/lotl.conf` with new configuration options
+1. Update `config/shadow.conf` with new configuration options
 2. Modify parsing logic in `modules/parsers.cpp`
 3. Add implementation in `core/init.cpp`
 4. Create new tool modules in the `tools/` directory as needed

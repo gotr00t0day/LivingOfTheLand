@@ -23,7 +23,7 @@ SRCS = $(SRC_DIR)/main.cpp \
 OBJS = $(SRCS:.cpp=.o)
 
 # Output binary
-TARGET = lotl
+TARGET = shadowharvester
 
 # Default build
 all: $(TARGET)

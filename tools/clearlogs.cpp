@@ -19,8 +19,8 @@ struct ClearLogs {
 
 void clearTracks() {
     ClearLogs logs; 
-    std::vector<std::string> echo = parseDependencies("config/lotl.conf", "optional");
-    std::vector<std::string> clear = parseDependencies("config/lotl.conf", "clear");
+    std::vector<std::string> echo = parseDependencies("config/shadow.conf", "optional");
+    std::vector<std::string> clear = parseDependencies("config/shadow.conf", "clear");
     if (find(clear.begin(), clear.end(), "yes") != clear.end()) {
         for (const auto& cmd : echo) {
             if (commandExists("echo") && cmd == "echo") {
