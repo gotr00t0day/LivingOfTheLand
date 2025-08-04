@@ -1,32 +1,6 @@
 # ShadowHarvester v0.17
 
-                              __
-                            .d$$b
-                          .' TO$;\
-                         /  : TP._;
-                        / _.;  :Tb|
-                       /   /   ;j$j
-                   _.-"       d$$$$
-                 .' ..       d$$$$;
-                /  /P'      d$$$$P. |\
-               /   "      .d$$$P' |\^"l
-             .'           `T$P^"""""  :
-         ._.'      _.'                ;
-      `-.-".-'-' ._.       _.-"    .-"
-    `.-" _____  ._              .-"
-   -(.g$$$$$$$b.              .'
-     ""^^T$$$P^)            .(:
-       _/  -"  /.'         /:/;
-    ._.'-'`-'  ")/         /;/;
- `-.-"..--""   " /         /  ;
-.-" ..--""        -'          :
-..--""--.-"         (\      .-(\
-  ..--""              `-\(\/;`
-    _.                      :
-                            ;`-
-                           :\
-                           ;  ShadowHarvester v0.17
-                                Author: c0d3Ninja
+**Author:** c0d3Ninja
 
 A comprehensive privilege escalation enumeration tool designed for Linux/Unix security assessments. ShadowHarvester helps security professionals identify potential attack vectors by systematically checking for misconfigurations, exposed credentials, vulnerable system components, and provides advanced persistence mechanisms for authorized testing.
 
